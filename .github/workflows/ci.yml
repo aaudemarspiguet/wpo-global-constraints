@@ -1,0 +1,14 @@
+name: reference
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install numpy scipy pandas scikit-learn matplotlib pytest
+      - run: WPO_IMPL=solutions pytest -q
+      - run: python experiments/run_all.py --impl solutions --users 800 --out /tmp/results
+      # Uncomment once your src/ is complete to test your own implementation:
+      # - run: pytest -q
